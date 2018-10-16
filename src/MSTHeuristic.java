@@ -16,9 +16,10 @@ public class MSTHeuristic {
     List<Node> nodes;
     Stack<Node> s = new Stack<>();
 
-    public void solveTSP(List<Node> nodes){
+    public void solveTSP(List<Node> nodes, String name){
         List<Edge> edges = createMST(nodes);
-        findTour(nodes.get(0));
+        List<Node> circuit = findTour(nodes.get(0));
+        outputSolution(circuit, name);
     }
 
 
@@ -42,13 +43,12 @@ public class MSTHeuristic {
                 }
             }
             //add two edges to create a eulerian graph
-            Edge e = new Edge(from, bestNeighbor, leastCost);
-            edges.add(e);
-            from.addEdge(e);
-            e = new Edge(bestNeighbor, from, leastCost);
-            edges.add(e);
-            bestNeighbor.addEdge(e);
-
+            for(int i=0; i<2;i++) {
+                Edge e = new Edge(from, bestNeighbor, leastCost);
+                edges.add(e);
+                from.addEdge(e);
+                bestNeighbor.addEdge(e);
+            }
 
             from = bestNeighbor;
             unvisited.remove(from);
@@ -57,26 +57,50 @@ public class MSTHeuristic {
     }
 
     /**
+     * Algorithm used to find the Euler tour was from this website:
      * http://www.graph-magics.com/articles/euler.php
      */
-    public void findTour(Node n) {
+    public List<Node> findTour(Node n) {
         Stack<Node> s = new Stack<>();
         List<Node> circuit = new ArrayList<>();
         Node currentNode = n;
-        while (!s.isEmpty() && currentNode.edges.isEmpty()) {
+        s.push(currentNode);
+        while (!s.isEmpty()) {
             if (currentNode.edges.isEmpty()){
                 circuit.add(currentNode);
                 currentNode = s.pop();
             }
             else {
                 Edge e = currentNode.edges.get(0);
+                Node neighbour = e.getNeighbour(currentNode);
                 currentNode.removeEdge(e);
+                neighbour.removeEdge(e);
                 s.push(currentNode);
-                currentNode = e.to;
+                currentNode = neighbour;
             }
         }
+        //getting rid of duplicates
+        List<Node> finalCircuit = new ArrayList<>();
         for (Node node : circuit){
-            System.out.println(node.toString());
+            if (!finalCircuit.contains(node)){
+                finalCircuit.add(node);
+            }
         }
+        //add back in the starting node
+        finalCircuit.add(0,n);
+        Collections.reverse(finalCircuit);
+        return finalCircuit;
+    }
+
+    public void outputSolution(List<Node> circuit, String name){
+        StringBuilder sb = new StringBuilder("\n"+name+" + MST heuristic\nPath is: ");
+        double totalWeight = 0;
+        for (int i=0; i<circuit.size()-1; i++){
+            sb.append(circuit.get(i).id +" -> ");
+            totalWeight +=Math.sqrt(Math.pow(circuit.get(i).x - circuit.get(i+1).x, 2)+Math.pow(circuit.get(i).y - circuit.get(i+1).y, 2));
+        }
+        sb.append(circuit.get(circuit.size()-1).id);
+        sb.append("\nTotal Weight = "+totalWeight);
+        System.out.println(sb.toString());
     }
 }
