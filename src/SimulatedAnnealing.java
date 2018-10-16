@@ -26,7 +26,10 @@ public class SimulatedAnnealing {
 
     }
 
+    public void findAllNeighbors(List<Node> nodes){
 
+    }
+    
 
     public void outputSolution(String name){
 
