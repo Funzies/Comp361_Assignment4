@@ -1,5 +1,6 @@
 /**
  * represents an edge between two nodes
+ * used for the MST algorithm
  */
 
 public class Edge {
