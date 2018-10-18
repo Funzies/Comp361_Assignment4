@@ -13,8 +13,10 @@ import java.util.List;
 public class SimulatedAnnealing {
 
     final int MAXITERATIONS = 1000;
-    final double INITIALTEMP = 10000;
-    final double COOLINGCONSTANT = 0.97;
+    final double INITIALTEMP = 5000;
+    final double COOLINGCONSTANT = 0.98;
+
+    double[] convergenceWeights = new double[MAXITERATIONS];
 
 
     public void solveTSP(List<Node> nodes, String name){
@@ -22,6 +24,7 @@ public class SimulatedAnnealing {
         Collections.shuffle(randomisedNodes);
         List<Node> solution = findSolution(randomisedNodes, MAXITERATIONS);
         outputSolution(solution, name);
+        outputConvergence(convergenceWeights);
     }
 
     public List<Node> findSolution(List<Node> nodes, int maxIterations){
@@ -38,6 +41,9 @@ public class SimulatedAnnealing {
                     //continue;
                 }
             }
+            //record weight progression
+            convergenceWeights[i] = bestWeight;
+            //cool temperature
             temperature *= COOLINGCONSTANT;
         }
         return best;
@@ -61,6 +67,15 @@ public class SimulatedAnnealing {
             totalWeight += Math.sqrt(Math.pow(nodes.get(i).x - nodes.get(i + 1).x, 2) + Math.pow(nodes.get(i).y - nodes.get(i + 1).y, 2));
         }
         return totalWeight;
+    }
+
+    /**
+     * Outputs the weights in a csv format
+     */
+    public void outputConvergence(double[] weights){
+        for (int i=0; i<weights.length; i++) {
+            System.out.println(i+","+weights[i]);
+        }
     }
 
     /**
