@@ -24,7 +24,7 @@ public class SimulatedAnnealing {
         Collections.shuffle(randomisedNodes);
         List<Node> solution = findSolution(randomisedNodes, MAXITERATIONS);
         outputSolution(solution, name);
-        outputConvergence(convergenceWeights);
+        //outputConvergence(convergenceWeights);
     }
 
     public List<Node> findSolution(List<Node> nodes, int maxIterations){
@@ -38,7 +38,6 @@ public class SimulatedAnnealing {
                 if (acceptanceCheck(candidateWeight, bestWeight, temperature)){
                     best = candidate;
                     bestWeight = candidateWeight;
-                    //continue;
                 }
             }
             //record weight progression
@@ -78,38 +77,8 @@ public class SimulatedAnnealing {
         }
     }
 
-    /**
-     * This find neighbors method finds neighbors by swapping two nodes which are next to each other
-     * This method should be much more faster than the previous one
-     * @param nodes
-     * @return
-
-    public List<List<Node>> findAllNeighbors(List<Node> nodes){
-        List<List<Node>> neighbors = new ArrayList<>();
-        for (int i=0; i<nodes.size()-1; i++){
-            List<Node> dummy = new ArrayList<>(nodes);
-            Collections.swap(dummy, i, i+1);
-            //complete the tour by adding in the first node at the back
-            dummy.add(dummy.get(0));
-            neighbors.add(dummy);
-        }
-        return neighbors;
-    }*/
-
-    public List<List<Node>> findSomeNeighbors(List<Node> nodes) {
-        List<List<Node>> neighbors = new ArrayList<>();
-        for (int i = 0; i < nodes.size(); i++) {
-            List<Node> dummy = new ArrayList<>(nodes);
-            Collections.swap(dummy, i, nodes.size() - i-1);
-            dummy.add(dummy.get(0));
-            neighbors.add(dummy);
-        }
-        return neighbors;
-    }
-
     /***
-     * This was an old find neighbors method which found all neighbors by finding all possible permutations
-     * of swapping any two nodes.
+     * Finds possible permutations of swapping nodes from the first half of the list to the 2nd half.
      */
     public List<List<Node>> findAllNeighbors(List<Node> nodes){
         List<List<Node>> neighbors = new ArrayList<>();
@@ -124,7 +93,7 @@ public class SimulatedAnnealing {
         }
         return neighbors;
     }
-    
+
 
     public void outputSolution(List<Node> solution, String name){
         StringBuilder sb = new StringBuilder("\n"+name+" + Simulated Annealing\nPath is: ");

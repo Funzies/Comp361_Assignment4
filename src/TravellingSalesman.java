@@ -4,11 +4,10 @@ import java.util.List;
 public class TravellingSalesman {
 
     public static void main(String[] args){
-        File berlin52 = new File("data/berlin52.tsp");
-        File kroB150 = new File("data/kroB150.tsp");
-        File a280 = new File("data/a280.tsp");
-        File ali535 = new File("data/ali535.tsp");
-
+        File berlin52 = new File(args[0]);
+        File kroB150 = new File(args[1]);
+        File a280 = new File(args[2]);
+        File ali535 = new File(args[3]);
 
         Loader loader = new Loader();
         List<Node> berlin52Nodes = loader.loadData(berlin52);
