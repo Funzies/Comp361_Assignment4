@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Travelling-salesman-problems:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Travelling_salesman_problems_jar</output-path>
+    <root id="archive" name="Travelling-salesman-problems.jar">
+      <element id="module-output" name="Travelling-salesman-problems" />
+      <element id="dir-copy" path="$PROJECT_DIR$/data" />
+      <element id="dir-copy" path="$PROJECT_DIR$/src" />
+    </root>
+  </artifact>
+</component>
